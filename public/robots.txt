@@ -1,0 +1,10 @@
+# Allow all web crawlers
+User-agent: *
+Allow: /
+
+# Disallow sensitive routes
+Disallow: /payment
+Disallow: /success
+
+# Sitemap
+Sitemap: https://www.createbestcv.com/sitemap.xml

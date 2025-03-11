@@ -1,0 +1,54 @@
+[build]
+command = "npm run build"
+publish = "dist"
+functions = "netlify/functions"
+ 
+[dev]
+command = "npm run dev"
+port = 5173
+targetPort = 5173
+functionsPort = 8888
+ 
+[functions]
+directory = "netlify/functions"
+node_bundler = "esbuild"
+ 
+# Redirect all Netlify function calls
+[[redirects]]
+from = "/.netlify/functions/*"
+to = "/.netlify/functions/:splat"
+status = 200
+force = true
+headers = { Access-Control-Allow-Origin = "*" }
+ 
+# SPA fallback (this should be the last redirect)
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
+force = true
+ 
+[build.environment]
+NETLIFY_SITE_NAME = "createbestcv"
+NODE_VERSION = "18.x"
+ 
+[[headers]]
+for = "/*"
+[headers.values]
+X-Frame-Options = "DENY"
+X-XSS-Protection = "1; mode=block"
+X-Content-Type-Options = "nosniff"
+Referrer-Policy = "strict-origin-when-cross-origin"
+Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+Access-Control-Allow-Origin = "*"
+Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+Access-Control-Allow-Headers = "Content-Type, Authorization"
+Content-Security-Policy = """
+default-src 'self' https://*.paypal.com https://*.braintree-api.com;
+script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.paypal.com https://*.googletagmanager.com https://*.google-analytics.com https://js.stripe.com;
+style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+img-src 'self' data: https://*.paypal.com https://*.google-analytics.com https://images.unsplash.com;
+font-src 'self' https://fonts.gstatic.com;
+connect-src 'self' https://*.paypal.com https://*.braintree-api.com https://*.google-analytics.com https://api.stripe.com https://*.netlify.app /.netlify/functions/*;
+frame-src https://*.paypal.com https://js.stripe.com;
+  """
