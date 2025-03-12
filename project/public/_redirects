@@ -1,0 +1,9 @@
+# Redirect all routes to index.html for client-side routing
+/*    /index.html   200
+
+# Handle PayPal return URLs
+/success    /index.html   200
+/cancel     /index.html   200
+
+# Handle API routes
+/.netlify/functions/*  /.netlify/functions/:splat  200
